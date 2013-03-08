@@ -72,12 +72,13 @@ function a_star(start, goal, world, discover)
 	while not empty(open_set) do
 		local current
 		local current_idx = current.toString()
-		local current_f = 600000000
+		local current_f_score = 600000000
 
-		for open_node_idx, open_node in pairs(open_set) do
-			if open_node ~= nil and f_score[open_node_idx] <= current_f then
-				current = open_node.copy()
-				current_f = f_score[open_node_idx]
+		for node_idx, node in pairs(open_set) do
+			if node ~= nil and f_score[node_idx] <= current_f_score then
+				current = node.copy()
+				current_idx = current.toString()
+				current_f_score = f_score[node_idx]
 			end
 		end
 
