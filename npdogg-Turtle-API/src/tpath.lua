@@ -39,7 +39,7 @@ function reconstruct_path(came_from, current_node)
 
 	if came_from[current_node.toString()] ~= nil then
 		path = reconstruct_path(came_from, came_from[current_node.toString()])
-		table.insert(path, current_node)
+		table.insert(path, current_node) 
 	end
 
 	return path
@@ -57,6 +57,7 @@ end
 -- @return The output of reconstruct_path on success or an empty set on failure
 
 function a_star(start, goal, world, discover)
+	local start_idx = start.toString()
 	local open_set = {}
 	local closed_set = {}
 	local came_from = {}
@@ -64,18 +65,19 @@ function a_star(start, goal, world, discover)
 	local f_score = {}
 	discover = discover or 0
 
-	open_set[start.toString()] = start
-	g_score[start.toString()] = 0
-	f_score[start.toString()] = heuristic_cost_estimate(start, goal)
+	open_set[start_idx] = start
+	g_score[start_idx] = 0
+	f_score[start_idx] = heuristic_cost_estimate(start, goal)
 
 	while not empty(open_set) do
 		local current
+		local current_idx = current.toString()
 		local current_f = 600000000
 
-		for open_node_key, open_node in pairs(open_set) do
-			if node ~= nil and f_score[open_node_key] <= current_f then
+		for open_node_idx, open_node in pairs(open_set) do
+			if open_node ~= nil and f_score[open_node_idx] <= current_f then
 				current = open_node.copy()
-				current_f = f_score[open_node_key]
+				current_f = f_score[open_node_idx]
 			end
 		end
 
@@ -83,22 +85,24 @@ function a_star(start, goal, world, discover)
 			return reconstruct_path(came_from, goal)
 		end
 
-		open_set[current.toString()] = nil
-		closed_set[current.toString()] = current
+		open_set[current_idx] = nil
+		closed_set[current_idx] = current
 
 		for direction = 0, 5 do
 			local neighbor = current.copy().step(direction)
+			local neighbor_idx = neighbor.toString()
+			local neighbor_state = world.get(neighbor)
 
-			if (world.get(neighbor) or 0) == 0 and closed_set[neighbor.toString()] == nil then
-				local tentative_g_score = g_score[current.toString()] + ((world.get(neighbor) == nil) and discover or 1)
+			if (neighbor_state or 0) == 0 and closed_set[neighbor_idx] == nil then
+				local tentative_g_score = g_score[current_idx] + ((neighbor_state == nil) and discover or 1)
 
-				if open_set[neighbor.toString()] == nil or tentative_g_score <= g_score[current.toString()] then
-					came_from[neighbor.toString()] = current.setF(direction)
-					g_score[neighbor.toString()] = tentative_g_score
-					f_score[neighbor.toString()] = g_score[neighbor.toString()] + heuristic_cost_estimate(neighbor, goal)
+				if open_set[neighbor_idx] == nil or tentative_g_score <= g_score[current_idx] then
+					came_from[neighbor_idx] = current.setF(direction)
+					g_score[neighbor_idx] = tentative_g_score
+					f_score[neighbor_idx] = g_score[neighbor_idx] + heuristic_cost_estimate(neighbor, goal)
 
-					if open_set[neighbor.toString()] == nil then
-						open_set[neighbor.toString()] = neighbor
+					if open_set[neighbor_idx] == nil then
+						open_set[neighbor_idx] = neighbor
 					end
 				end
 			end
