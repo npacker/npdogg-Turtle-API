@@ -96,11 +96,7 @@ function Position.new(_x, _y, _z, _f)
 	end
 
 	function this.equals(position)
-		if x ~= position.getX() then
-			return false
-		elseif y ~= position.getY() then
-			return false
-		elseif z ~= position.getZ() then
+		if x ~= position.getX() or y ~= position.getY() or z ~= position.getZ() then
 			return false
 		end
 
