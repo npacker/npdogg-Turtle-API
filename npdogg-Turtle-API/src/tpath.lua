@@ -34,12 +34,12 @@ end
 --
 -- @return A list of the nodes in the reconstructed path
 
-function reconstruct_path(came_from, current_node)
+function reconstruct_path(came_from, current)
 	local path = {}
 
-	if came_from[current_node.toString()] ~= nil then
-		path = reconstruct_path(came_from, came_from[current_node.toString()])
-		table.insert(path, current_node) 
+	if came_from[current.toString()] ~= nil then
+		path = reconstruct_path(came_from, came_from[current.toString()])
+		table.insert(path, current) 
 	end
 
 	return path
