@@ -110,13 +110,7 @@ function TurtleBase.new()
 	-- @return boolean "success"
 
 	function this.turnAround()
-		for i = 1, 2 do
-			if not this.turnRight() then
-				return false
-			end
-		end
-
-		return true
+		return this.turnRight() and this.turnRight()
 	end
 
 	--- Turns the turtle to the given direction.
@@ -505,9 +499,8 @@ function MiningTurtle.inherit(this)
 
 		for f = 0, 3 do
 			this.turnTo(f)
-			result = this.place(container_slot)
 
-			if result then
+			if this.place(container_slot) then
 				result = this.drop(start_slot, end_slot)
 				break
 			end
