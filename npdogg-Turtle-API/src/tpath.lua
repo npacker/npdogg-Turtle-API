@@ -89,8 +89,8 @@ function a_star(start, goal, world, discover)
 		open_set[current_idx] = nil
 		closed_set[current_idx] = current
 
-		for direction = 0, 5 do
-			local neighbor = current.copy().step(direction)
+		for f = 0, 5 do
+			local neighbor = current.copy().step(f)
 			local neighbor_idx = neighbor.toString()
 			local neighbor_state = world.get(neighbor)
 
@@ -98,7 +98,7 @@ function a_star(start, goal, world, discover)
 				local tentative_g_score = g_score[current_idx] + ((neighbor_state == nil) and discover or 1)
 
 				if open_set[neighbor_idx] == nil or tentative_g_score <= g_score[current_idx] then
-					came_from[neighbor_idx] = current.setF(direction)
+					came_from[neighbor_idx] = current.setF(f)
 					g_score[neighbor_idx] = tentative_g_score
 					f_score[neighbor_idx] = g_score[neighbor_idx] + heuristic_cost_estimate(neighbor, goal)
 

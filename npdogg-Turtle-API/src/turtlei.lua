@@ -235,17 +235,17 @@ function TurtleBase.new()
 				return false
 			end
 
-			for _, step in ipairs(path) do
-				if step.getF() == tposition.Position.UP() then
+			for _, f in ipairs(path) do
+				if f == tposition.Position.UP() then
 					if not this.up() then
 						break
 					end
-				elseif step.getF() == tposition.Position.DOWN() then
+				elseif f == tposition.Position.DOWN() then
 					if not this.down() then
 						break
 					end
 				else
-					this.turnTo(step.getF())
+					this.turnTo(f)
 
 					if not this.forward() then
 						break
