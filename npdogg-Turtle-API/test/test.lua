@@ -183,7 +183,7 @@ function reconstruct_path(came_from, current)
 	if came_from[current.toString()] ~= nil then
 		local next = came_from[current.toString()]
 		path = reconstruct_path(came_from, next)
-		table.insert(path, current) 
+		table.insert(path, current)
 	end
 
 	return path
@@ -207,19 +207,19 @@ function a_star(start, goal)
 		local current_f_score = 60000000
 
 		for node_idx, node in pairs(open_set) do
-			if f_score[node_idx] <= current_f_score then
+			if f_score[node_idx] < current_f_score then
 				current = node.copy()
 				current_idx = current.toString()
 				current_f_score = f_score[node_idx]
 			end
 		end
 		
-		if current.equals(goal) then
-			return reconstruct_path(came_from, goal)
-		end
-
 		open_set[current_idx] = nil
 		closed_set[current_idx] = current
+		
+		if current.equals(goal) then
+			return reconstruct_path(came_from, current)
+		end
 
 		for f = 0, 5 do
 			local neighbor = current.copy().step(f)
@@ -228,6 +228,7 @@ function a_star(start, goal)
 
 			if open_set[neighbor_idx] ~= nil and tentative_g_score < g_score[neighbor_idx] then
 				g_score[neighbor_idx] = tentative_g_score
+				f_score[neighbor_idx] = g_score[neighbor_idx] + heuristic_cost_estimate(neighbor, goal)
 				came_from[neighbor_idx] = current
 			elseif closed_set[neighbor_idx] == nil and open_set[neighbor_idx] == nil then
 				open_set[neighbor_idx] = neighbor
@@ -243,7 +244,7 @@ end
 
 function test_astar()
 	local start = Position.new(0, 0, 0)
-	local goal = Position.new(10, 10, 10)
+	local goal = Position.new(1, 1, 1)
 	local path = a_star(start, goal)
 	
 	for _, step in ipairs(path) do

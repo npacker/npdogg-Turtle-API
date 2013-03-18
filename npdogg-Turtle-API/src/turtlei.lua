@@ -264,7 +264,7 @@ end
 
 Turtle = {}
 
-function Turtle.inherit(this)
+function Turtle.extend(this)
 
 	--- Finds the total items currently in inventory.
 	-- Given a range of slots over which to iterate, the item count of each slot
@@ -357,13 +357,13 @@ function Turtle.inherit(this)
 end
 
 function Turtle.new()
-	return Turtle.inherit(TurtleBase.new())
+	return Turtle.extend(TurtleBase.new())
 end
 
 
 MiningTurtle = {}
 
-function MiningTurtle.inherit(this)
+function MiningTurtle.extend(this)
 
 	--- Attempts to dig the block in front of the Turtle.
 	-- The number of attempts can be increased by the passed argument, such that
@@ -521,5 +521,5 @@ function MiningTurtle.inherit(this)
 end
 
 function MiningTurtle.new()
-	return MiningTurtle.inherit(Turtle.new())
+	return MiningTurtle.extend(Turtle.new())
 end
