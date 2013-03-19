@@ -6,61 +6,7 @@ function BinaryHeap.new()
 	
 	local heap = {}
 	local values = {}
-	local size = 0
-	
-	function this.min()
-		return heap[1]
-	end
-	
-	function this.key(index)
-		return heap[index]
-	end
-	
-	function this.value(key)
-		return values[key]
-	end
-	
-	function this.size()
-		return size
-	end
-	
-	function this.parent(index)
-		local parent_index = parent_index(index)
-		
-		return values[parent_index]
-	end
-	
-	function this.left_child(index)
-		local left_child_index = left_child_index(index)
-		
-		return values[left_child_index]
-	end
-	
-	function this.right_child(index)
-		local right_child_index = right_child_index(index)
-		
-		return values[right_child_index]
-	end
-	
-	local function bubble(index)
-		while index > 1 do
-			local parent_index = parent_index(index)
-			local value = values[heap[index]]
-			local parent_value = this.parent(index)
-			
-			if value <= parent_value then
-				swap(parent_index, index)
-				index = parent_index
-			end
-		end
-	end
-	
-	local function swap(parent, child)
-		local swap = heap[parent]
-		
-		heap[parent] = heap[child]
-		heap[child] = swap
-	end
+	local base = 0
 	
 	local function parent_index(index)
 		return math.floor(index / 2)
@@ -73,10 +19,62 @@ function BinaryHeap.new()
 	local function right_child_index(index)
 		return 2 * index + 1
 	end
+	
+	local function swap(parent_index, child_index)
+		local swap = heap[parent_index]
+		
+		heap[parent_index] = heap[child_index]
+		heap[child_index] = swap
+	end
+	
+	local function bubble(index)
+		local value = values[heap[index]]
+		
+		while index > 1 do
+			local parent_index = parent_index(index)
+			local parent_value = values[heap[parent_index]]
+			
+			if value <= parent_value then
+				swap(parent_index, index)
+				index = parent_index
+			else
+				break
+			end
+		end
+	end
+	
+	local function index(key)
+		for index, stored_key in ipairs(heap) do
+			if stored_key == key then return index end
+		end
+	end
+	
+	function this.size()
+		return base
+	end
+	
+	function this.min()
+		return values[heap[1]]
+	end
+	
+	function this.value(key)
+		return values[key]
+	end
+	
+	function this.insert(key, value)
+		base = base + 1
+		values[key] = value
+		heap[base] = key
+		bubble(base)
+	end
+	
+	function this.update(key, value)
+		local index = index(key)
+		
+		values[key] = value
+		bubble(index)
+	end
 		
 	return this
 
 end
-
-heapy = BinaryHeap.new()
-print(heapy.size())
