@@ -1,3 +1,84 @@
+BinaryHeap = {}
+
+function BinaryHeap.new()
+
+	local this = {}
+	
+	local heap = {}
+	local values = {}
+	local base = 0
+	
+	local function parent_index(index)
+		return math.floor(index / 2)
+	end
+	
+	local function left_child_index(index)
+		return 2 * index
+	end
+	
+	local function right_child_index(index)
+		return 2 * index + 1
+	end
+	
+	local function swap(parent_index, child_index)
+		local swap = heap[parent_index]
+		
+		heap[parent_index] = heap[child_index]
+		heap[child_index] = swap
+	end
+	
+	local function bubble(index)
+		local value = values[heap[index]]
+		
+		while index > 1 do
+			local parent_index = parent_index(index)
+			local parent_value = values[heap[parent_index]]
+			
+			if value <= parent_value then
+				swap(parent_index, index)
+				index = parent_index
+			else
+				break
+			end
+		end
+	end
+	
+	local function index(key)
+		for index, stored_key in ipairs(heap) do
+			if stored_key == key then return index end
+		end
+	end
+	
+	function this.size()
+		return base
+	end
+	
+	function this.min()
+		return heap[1]
+	end
+	
+	function this.value(key)
+		return values[key]
+	end
+	
+	function this.insert(key, value)
+		base = base + 1
+		values[key] = value
+		heap[base] = key
+		bubble(base)
+	end
+	
+	function this.update(key, value)
+		local index = index(key)
+		
+		values[key] = value
+		bubble(index)
+	end
+		
+	return this
+
+end
+
 Position = {}
 
 local SOUTH, WEST, NORTH, EAST, UP, DOWN = 0, 1, 2, 3, 4, 5
@@ -193,26 +274,17 @@ function a_star(start, goal)
 	local open_set = {}
 	local closed_set = {}
 	local g_score = {}
-	local f_score = {}
+	local f_score = BinaryHeap.new()
 	local came_from = {}
 	local start_idx = start.toString()
 	
 	open_set[start_idx] = start
 	g_score[start_idx] = 0
-	f_score[start_idx] = heuristic_cost_estimate(start, goal)
+	f_score.insert(start_idx, heuristic_cost_estimate(start, goal)) 
 
 	while not empty(open_set) do
-		local current
-		local current_idx
-		local current_f_score = 60000000
-
-		for node_idx, node in pairs(open_set) do
-			if f_score[node_idx] < current_f_score then
-				current = node.copy()
-				current_idx = current.toString()
-				current_f_score = f_score[node_idx]
-			end
-		end
+		local current_idx = f_score.min()
+		local current = open_set[current_idx]
 		
 		open_set[current_idx] = nil
 		closed_set[current_idx] = current
@@ -228,12 +300,12 @@ function a_star(start, goal)
 
 			if open_set[neighbor_idx] ~= nil and tentative_g_score < g_score[neighbor_idx] then
 				g_score[neighbor_idx] = tentative_g_score
-				f_score[neighbor_idx] = g_score[neighbor_idx] + heuristic_cost_estimate(neighbor, goal)
+				f_score.update(neighbor_idx, g_score[neighbor_idx] + heuristic_cost_estimate(neighbor, goal))
 				came_from[neighbor_idx] = current
 			elseif closed_set[neighbor_idx] == nil and open_set[neighbor_idx] == nil then
 				open_set[neighbor_idx] = neighbor
 				g_score[neighbor_idx] = tentative_g_score
-				f_score[neighbor_idx] = g_score[neighbor_idx] + heuristic_cost_estimate(neighbor, goal)
+				f_score.insert(neighbor_idx, g_score[neighbor_idx] + heuristic_cost_estimate(neighbor, goal))
 				came_from[neighbor_idx] = current
 			end
 		end
@@ -244,7 +316,7 @@ end
 
 function test_astar()
 	local start = Position.new(0, 0, 0)
-	local goal = Position.new(1, 1, 1)
+	local goal = Position.new(100, 100, 10)
 	local path = a_star(start, goal)
 	
 	for _, step in ipairs(path) do
