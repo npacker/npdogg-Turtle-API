@@ -54,7 +54,7 @@ function BinaryHeap.new()
 	end
 	
 	function this.min()
-		return values[heap[1]]
+		return heap[1]
 	end
 	
 	function this.value(key)
