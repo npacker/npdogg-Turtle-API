@@ -29,7 +29,8 @@ end
 
 ---
 -- A* path reconstruction.
--- Given a list of nodes and the current node, it will build a path
+-- Given a hash map of nodes where the keys are the children of the node stored
+-- at each index, the nodes in the final path will be returned in an array.
 --
 -- @param came_from The list of nodes. Expects a list of Position objects.
 -- @param current_node The current node in the path iteration. Expects a
@@ -57,7 +58,6 @@ end
 -- @param start The starting node. Expects a Position object.
 -- @param goal The goal node. Expects a Position object.
 -- @param world The map object containing the known geography of the world
--- @param discover Whether unknown geography should be explored
 --
 -- @return The output of reconstruct_path on success or an empty set on failure
 

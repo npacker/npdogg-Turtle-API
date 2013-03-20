@@ -32,7 +32,9 @@ function BinaryHeap.new()
 	
 	local function index(key)
 		for index, stored_key in ipairs(heap) do
-			if stored_key == key then return index end
+			if stored_key == key then
+				return index
+			end
 		end
 	end
 	
