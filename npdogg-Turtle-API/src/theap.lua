@@ -8,21 +8,8 @@ function BinaryHeap.new()
 	local values = {}
 	local base = 0
 	
-	local function parent_index(index)
-		return math.floor(index / 2)
-	end
-	
-	local function left_child_index(index)
-		return 2 * index
-	end
-	
-	local function right_child_index(index)
-		return 2 * index + 1
-	end
-	
 	local function swap(parent_index, child_index)
 		local swap = heap[parent_index]
-		
 		heap[parent_index] = heap[child_index]
 		heap[child_index] = swap
 	end
@@ -31,7 +18,7 @@ function BinaryHeap.new()
 		local value = values[heap[index]]
 		
 		while index > 1 do
-			local parent_index = parent_index(index)
+			local parent_index = math.floor(index / 2)
 			local parent_value = values[heap[parent_index]]
 			
 			if value <= parent_value then
@@ -70,7 +57,6 @@ function BinaryHeap.new()
 	
 	function this.update(key, value)
 		local index = index(key)
-		
 		values[key] = value
 		bubble(index)
 	end

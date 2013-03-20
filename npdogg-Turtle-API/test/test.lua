@@ -8,21 +8,8 @@ function BinaryHeap.new()
 	local values = {}
 	local base = 0
 	
-	local function parent_index(index)
-		return math.floor(index / 2)
-	end
-	
-	local function left_child_index(index)
-		return 2 * index
-	end
-	
-	local function right_child_index(index)
-		return 2 * index + 1
-	end
-	
 	local function swap(parent_index, child_index)
 		local swap = heap[parent_index]
-		
 		heap[parent_index] = heap[child_index]
 		heap[child_index] = swap
 	end
@@ -31,7 +18,7 @@ function BinaryHeap.new()
 		local value = values[heap[index]]
 		
 		while index > 1 do
-			local parent_index = parent_index(index)
+			local parent_index = math.floor(index / 2)
 			local parent_value = values[heap[parent_index]]
 			
 			if value <= parent_value then
@@ -70,7 +57,6 @@ function BinaryHeap.new()
 	
 	function this.update(key, value)
 		local index = index(key)
-		
 		values[key] = value
 		bubble(index)
 	end
@@ -117,14 +103,14 @@ function Position.DOWN()
 	return DOWN
 end
 
-function Position.new(_x, _y, _z, _f)
+function Position.new(x, y, z, f)
 
 	local this = {}
 
-	this.x = _x or 0
-	this.y = _y or 0
-	this.z = _z or 0
-	this.f = _f or 0
+	this.x = x or 0
+	this.y = y or 0
+	this.z = z or 0
+	this.f = f or 0
 
 	function this.step(direction)
 		local delta = deltas[direction]
@@ -192,32 +178,32 @@ function Position.new(_x, _y, _z, _f)
 		return string.format("%d:%d:%d", this.x, this.y, this.z)
 	end
 
-	function this.setX(_x)
-		this.x = _x
+	function this.setX(x)
+		this.x = x
 
 		return this
 	end
 
-	function this.setY(_y)
-		this.y = _y
+	function this.setY(y)
+		this.y = y
 
 		return this
 	end
 
-	function this.setZ(_z)
-		this.z = _z
+	function this.setZ(z)
+		this.z = z
 
 		return this
 	end
 
-	function this.setF(_f)
-		this.f = _f
+	function this.setF(f)
+		this.f = f
 
 		return this
 	end
 
-	function this.set(_x, _y, _z, _f)
-		this.x, this.y, this.z, this.f = _x, _y, _z, _f
+	function this.set(x, y, z, f)
+		this.x, this.y, this.z, this.f = x, y, z, f
 
 		return this
 	end
@@ -246,6 +232,51 @@ function Position.new(_x, _y, _z, _f)
 
 end
 
+Map = {}
+
+function Map.new()
+
+  local this = {}
+
+  local map = {}
+  local size = 0
+
+  function this.size()
+    return size
+  end
+
+  function this.exists(location)
+    return map[location.toString()] ~= nil
+  end
+
+  function this.get(location)
+    return map[location.toString()]
+  end
+
+  function this.free(location)
+  	size = this.exists(location) and size or (size + 1)
+    map[location.toString()] = 0
+  end
+
+  function this.fill(location)
+  	size = this.exists(location) and size or (size + 1)
+    map[location.toString()] = 1
+  end
+
+  function this.remove(location)
+  	size = this.exists(location) and size or (size - 1)
+    map[location.toString()] = nil
+  end
+
+  function this.clear()
+    map = {}
+    size = 0
+  end
+
+  return this
+
+end
+
 function empty(lua_table)
 	if next(lua_table) == nil then
 		return true
@@ -270,7 +301,8 @@ function reconstruct_path(came_from, current)
 	return path
 end
 
-function a_star(start, goal)
+function a_star(start, goal, world)
+	local path = {}
 	local open_set = {}
 	local closed_set = {}
 	local g_score = {}
@@ -290,19 +322,21 @@ function a_star(start, goal)
 		closed_set[current_idx] = current
 		
 		if current.equals(goal) then
-			return reconstruct_path(came_from, current)
+			path = reconstruct_path(came_from, current)
+			break
 		end
 
 		for f = 0, 5 do
 			local neighbor = current.copy().step(f)
 			local neighbor_idx = neighbor.toString()
+			local neighbor_state = world.get(neighbor)
 			local tentative_g_score = g_score[current_idx] + 1
 
 			if open_set[neighbor_idx] ~= nil and tentative_g_score < g_score[neighbor_idx] then
 				g_score[neighbor_idx] = tentative_g_score
 				f_score.update(neighbor_idx, g_score[neighbor_idx] + heuristic_cost_estimate(neighbor, goal))
 				came_from[neighbor_idx] = current
-			elseif closed_set[neighbor_idx] == nil and open_set[neighbor_idx] == nil then
+			elseif (neighbor_state or 0) == 0 and closed_set[neighbor_idx] == nil and open_set[neighbor_idx] == nil then
 				open_set[neighbor_idx] = neighbor
 				g_score[neighbor_idx] = tentative_g_score
 				f_score.insert(neighbor_idx, g_score[neighbor_idx] + heuristic_cost_estimate(neighbor, goal))
@@ -311,13 +345,14 @@ function a_star(start, goal)
 		end
 	end
 
-	return {}
+	return path
 end
 
 function test_astar()
+	local world = Map.new()
 	local start = Position.new(0, 0, 0)
-	local goal = Position.new(100, 100, 10)
-	local path = a_star(start, goal)
+	local goal = Position.new(64, 64, 64)
+	local path = a_star(start, goal, world)
 	
 	for _, step in ipairs(path) do
 		print(step.toString())
