@@ -1,6 +1,6 @@
 --- 
 -- Determines if a Lua table is empty.
--- The table cannot contain null values
+-- The table cannot contain nil values
 --
 -- @param lua_table The table to be checked
 --
