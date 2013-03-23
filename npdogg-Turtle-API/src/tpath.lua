@@ -65,17 +65,17 @@ function a_star(start, goal, world)
 	local path = {}
 	local open_set = {}
 	local closed_set = {}
-	local g_score = {}
-	local f_score = BinaryHeap.new()
+	local g_scores = {}
+	local f_scores = BinaryHeap.new()
 	local came_from = {}
 	local start_idx = start.toString()
 	
 	open_set[start_idx] = start
-	g_score[start_idx] = 0
-	f_score.insert(start_idx, heuristic_cost_estimate(start, goal)) 
+	g_scores[start_idx] = 0
+	f_scores.insert(start_idx, heuristic_cost_estimate(start, goal)) 
 
 	while not empty(open_set) do
-		local current_idx = f_score.min()
+		local current_idx = f_scores.min()
 		local current = open_set[current_idx]
 		
 		open_set[current_idx] = nil
@@ -90,16 +90,16 @@ function a_star(start, goal, world)
 			local neighbor = current.copy().step(f)
 			local neighbor_idx = neighbor.toString()
 			local neighbor_state = world.get(neighbor)
-			local tentative_g_score = g_score[current_idx] + 1
+			local tentative_g_score = g_scores[current_idx] + 1
 
-			if open_set[neighbor_idx] ~= nil and tentative_g_score < g_score[neighbor_idx] then
-				g_score[neighbor_idx] = tentative_g_score
-				f_score.update(neighbor_idx, g_score[neighbor_idx] + heuristic_cost_estimate(neighbor, goal))
+			if open_set[neighbor_idx] ~= nil and tentative_g_score < g_scores[neighbor_idx] then
+				g_scores[neighbor_idx] = tentative_g_score
+				f_scores.update(neighbor_idx, g_scores[neighbor_idx] + heuristic_cost_estimate(neighbor, goal))
 				came_from[neighbor_idx] = current
 			elseif (neighbor_state or 0) == 0 and closed_set[neighbor_idx] == nil and open_set[neighbor_idx] == nil then
 				open_set[neighbor_idx] = neighbor
-				g_score[neighbor_idx] = tentative_g_score
-				f_score.insert(neighbor_idx, g_score[neighbor_idx] + heuristic_cost_estimate(neighbor, goal))
+				g_scores[neighbor_idx] = tentative_g_score
+				f_scores.insert(neighbor_idx, g_scores[neighbor_idx] + heuristic_cost_estimate(neighbor, goal))
 				came_from[neighbor_idx] = current
 			end
 		end
