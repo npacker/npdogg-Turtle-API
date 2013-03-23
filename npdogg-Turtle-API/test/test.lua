@@ -73,13 +73,20 @@ function BinaryHeap.new()
 	end
 	
 	local function deleteMin()
-		local key = heap[1]
-		values[key] = nil
+		local old_key, new_key, old_base
+		
+		old_base = base
+		old_key = heap[1]
+		
 		heap[1] = heap[base]
-		key = heap[1]
-		heap[base] = nil
+		new_key = heap[1]
 		base = base - 1
-		positions[key] = sift(1)
+		
+		positions[new_key] = sift(1)
+		
+		heap[old_base] = nil
+		values[old_key] = nil
+		positions[old_key] = nil
 	end
 	
 	function this.min()
@@ -294,17 +301,12 @@ function Map.new()
     return map[location.toString()]
   end
 
-  function this.free(location)
-  	size = this.exists(location) and size or (size + 1)
-    map[location.toString()] = 0
-  end
-
   function this.fill(location)
   	size = this.exists(location) and size or (size + 1)
     map[location.toString()] = 1
   end
 
-  function this.remove(location)
+  function this.free(location)
   	size = this.exists(location) and size or (size - 1)
     map[location.toString()] = nil
   end
@@ -392,7 +394,15 @@ end
 function test_astar()
 	local world = Map.new()
 	local p1 = Position.new(1, 0, 0)
+	local p2 = Position.new(0, -1, 0)
+	local p3 = Position.new(0, 1, 0)
+	local p4 = Position.new(-1, 0, 0)
+	local p5 = Position.new(0, 0, -1)
 	world.fill(p1)
+	world.fill(p2)
+	world.fill(p3)
+	world.fill(p4)
+	world.fill(p5)
 	local start = Position.new(0, 0, 0)
 	local goal = Position.new(2, 0, 0)
 	local path = a_star(start, goal, world)

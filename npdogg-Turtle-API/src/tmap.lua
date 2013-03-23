@@ -19,17 +19,12 @@ function Map.new()
     return map[location.toString()]
   end
 
-  function this.free(location)
-  	size = this.exists(location) and size or (size + 1)
-    map[location.toString()] = 0
-  end
-
   function this.fill(location)
   	size = this.exists(location) and size or (size + 1)
     map[location.toString()] = 1
   end
 
-  function this.remove(location)
+  function this.free(location)
   	size = this.exists(location) and size or (size - 1)
     map[location.toString()] = nil
   end

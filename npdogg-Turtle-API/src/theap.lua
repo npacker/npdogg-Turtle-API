@@ -73,13 +73,20 @@ function BinaryHeap.new()
 	end
 	
 	local function deleteMin()
-		local key = heap[1]
-		values[key] = nil
+		local old_key, new_key, old_base
+		
+		old_base = base
+		old_key = heap[1]
+		
 		heap[1] = heap[base]
-		key = heap[1]
-		heap[base] = nil
+		new_key = heap[1]
 		base = base - 1
-		positions[key] = sift(1)
+		
+		positions[new_key] = sift(1)
+		
+		heap[old_base] = nil
+		values[old_key] = nil
+		positions[old_key] = nil
 	end
 	
 	function this.min()
