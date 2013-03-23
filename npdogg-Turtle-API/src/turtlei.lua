@@ -42,7 +42,7 @@ function TurtleBase.new()
 
 		return this.position
 	end
-
+	
 	---
 	-- Detects in all possible directions and records the results in the world
 	-- map. Also records the currently occupied position as free in the world map.
@@ -138,6 +138,19 @@ function TurtleBase.new()
 	end
 
 	---
+	-- Determines if the turtle has sufficient fuel supplies remaining to travel
+	-- the given distance.
+	-- 
+	-- @param distance The distance to be traveled.
+	-- 
+	-- @return boolean True if the fuel level is greater than or equal to the
+	-- distance, false otherwise.
+
+	function this.sufficientFuel(distance)
+		return turtle.getFuelLevel() - distance >= 0
+	end
+
+	---
 	-- Attempts to move the turtle forward 1 block.
 	-- The position of the turtle is updated and discover is called. If the
 	-- movement is unsuccessful, the obstruction is recorded on the world map.
@@ -145,19 +158,21 @@ function TurtleBase.new()
 	-- @return boolean "success"
 	
 	function this.forward()
-		if turtle.forward() then
-			this.position.forward()
-			this.discover()
-			this.log("Moved forward to " .. this.position.toString())
-
-			return true
-		else
-			local discovered = this.position.copy().forward()
-
-			this.world.fill(discovered)
-
-			return false
+		if this.sufficientFuel(1) then
+			if turtle.forward() then
+				this.position.forward()
+				this.discover()
+				this.log("Moved forward to " .. this.position.toString())
+	
+				return true
+			else
+				local discovered = this.position.copy().forward()
+	
+				this.world.fill(discovered)
+			end
 		end
+		
+		return false
 	end
 
 	---
@@ -168,19 +183,21 @@ function TurtleBase.new()
 	-- @return boolean "success"
 
 	function this.back()
-		if turtle.back() then
-			this.position.back()
-			this.discover()
-			this.log("Moved back to " .. this.position.toString())
-
-			return true
-		else
-			local discovered = this.position.copy().back()
-
-			this.world.fill(discovered)
-
-			return false
+		if this.sufficientFuel(1) then
+			if turtle.back() then
+				this.position.back()
+				this.discover()
+				this.log("Moved back to " .. this.position.toString())
+	
+				return true
+			else
+				local discovered = this.position.copy().back()
+	
+				this.world.fill(discovered)
+			end
 		end
+
+		return false
 	end
 
 	---
@@ -191,19 +208,21 @@ function TurtleBase.new()
 	-- @return boolean "success"
 
 	function this.up()
-		if turtle.up() then
-			this.position.up()
-			this.discover()
-			this.log("Moved up to " .. this.position.toString())
-
-			return true
-		else
-			local discovered = this.position.copy().up()
-
-			this.world.fill(discovered)
-
-			return false
+		if this.sufficientFuel(1) then
+			if turtle.up() then
+				this.position.up()
+				this.discover()
+				this.log("Moved up to " .. this.position.toString())
+	
+				return true
+			else
+				local discovered = this.position.copy().up()
+	
+				this.world.fill(discovered)
+			end
 		end
+		
+		return false
 	end
 
 	---
@@ -214,19 +233,21 @@ function TurtleBase.new()
 	-- @return boolean "success"
 
 	function this.down()
-		if turtle.down() then
-			this.position.down()
-			this.discover()
-			this.log("Moved down to " .. this.position.toString())
-
-			return true
-		else
-			local discovered = this.position.copy().down()
-
-			this.world.fill(discovered)
-
-			return false
+		if this.sufficientFuel(1) then
+			if turtle.down() then
+				this.position.down()
+				this.discover()
+				this.log("Moved down to " .. this.position.toString())
+	
+				return true
+			else
+				local discovered = this.position.copy().down()
+	
+				this.world.fill(discovered)
+			end
 		end
+		
+		return false
 	end
 
 	---

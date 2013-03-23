@@ -40,29 +40,29 @@ function Position.new(x, y, z, f)
 
 	local this = {}
 
-	this.x = x or 0
-	this.y = y or 0
-	this.z = z or 0
-	this.f = f or 0
+	x = x or 0
+	y = y or 0
+	z = z or 0
+	f = f or 0
 
 	function this.step(direction)
 		local delta = deltas[direction]
 
-		this.x, this.y, this.z = this.x + delta["x"], this.y + delta["y"], this.z + delta["z"]
+		x, y, z = x + delta["x"], y + delta["y"], z + delta["z"]
 
 		return this
 	end
 
 	function this.back()
-		local delta = deltas[this.f]
+		local delta = deltas[f]
 
-		this.x, this.y, this.z = this.x - delta["x"], this.y - delta["y"], this.z - delta["z"]
+		x, y, z = x - delta["x"], y - delta["y"], z - delta["z"]
 
 		return this
 	end
 
 	function this.forward()
-		this.step(this.f)
+		this.step(f)
 
 		return this
 	end
@@ -80,23 +80,23 @@ function Position.new(x, y, z, f)
 	end
 
 	function this.turnLeft()
-		this.f = (this.f + 3) % 4
+		f = (f + 3) % 4
 
 		return this
 	end
 
 	function this.turnRight()
-		this.f = (this.f + 1) % 4
+		f = (f + 1) % 4
 
 		return this
 	end
 
 	function this.distance(position)
-		return math.abs(position.getX() - this.x) + math.abs(position.getY() - this.y) + math.abs(position.getZ() - this.z)
+		return math.abs(position.getX() - x) + math.abs(position.getY() - y) + math.abs(position.getZ() - z)
 	end
 	
 	function this.equals(position)
-		if this.x ~= position.getX() or this.y ~= position.getY() or this.z ~= position.getZ() then
+		if x ~= position.getX() or y ~= position.getY() or z ~= position.getZ() then
 			return false
 		end
 
@@ -104,61 +104,31 @@ function Position.new(x, y, z, f)
 	end
 
 	function this.copy()
-		return Position.new(this.x, this.y, this.z, this.f)
+		return Position.new(x, y, z, f)
 	end
 
 	function this.toString()
-		return string.format("%d:%d:%d", this.x, this.y, this.z)
-	end
-
-	function this.setX(x)
-		this.x = x
-
-		return this
-	end
-
-	function this.setY(y)
-		this.y = y
-
-		return this
-	end
-
-	function this.setZ(z)
-		this.z = z
-
-		return this
-	end
-
-	function this.setF(f)
-		this.f = f
-
-		return this
-	end
-
-	function this.set(x, y, z, f)
-		this.x, this.y, this.z, this.f = x, y, z, f
-
-		return this
+		return string.format("%d,%d,%d", x, y, z)
 	end
 
 	function this.getX()
-		return this.x
+		return x
 	end
 
 	function this.getY()
-		return this.y
+		return y
 	end
 
 	function this.getZ()
-		return this.z
+		return z
 	end
 
 	function this.getF()
-		return this.f
+		return f
 	end
 
-	function this.get()
-		return this.x, this.y, this.z, this.f
+	function this.getAll()
+		return x, y, z, f
 	end
 
 	return this

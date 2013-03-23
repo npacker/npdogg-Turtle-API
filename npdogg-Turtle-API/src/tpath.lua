@@ -1,20 +1,4 @@
 --- 
--- Determines if a Lua table is empty.
--- The table cannot contain nil values
---
--- @param lua_table The table to be checked
---
--- @return True if the table is empty, false otherwise
-
-function empty(lua_table)
-	if next(lua_table) == nil then
-		return true
-	end
-
-	return false
-end
-
---- 
 -- A* heuristic estimate of the cost to travel between two nodes.
 -- Calculates the Manhattan distance between the start and goal.
 --
@@ -40,9 +24,10 @@ end
 
 function reconstruct_path(came_from, current)
 	local path = {}
+	local current_idx = current.toString()
 
-	if came_from[current.toString()] ~= nil then
-		local next = came_from[current.toString()]
+	if came_from[current_idx] ~= nil then
+		local next = came_from[current_idx]
 		path = reconstruct_path(came_from, next)
 		table.insert(path, current)
 	end
@@ -74,7 +59,7 @@ function a_star(start, goal, world)
 	g_scores[start_idx] = 0
 	f_scores.insert(start_idx, heuristic_cost_estimate(start, goal)) 
 
-	while not empty(open_set) do
+	while next(open_set) do
 		local current_idx = f_scores.min()
 		local current = open_set[current_idx]
 		
@@ -96,7 +81,7 @@ function a_star(start, goal, world)
 				g_scores[neighbor_idx] = tentative_g_score
 				f_scores.update(neighbor_idx, g_scores[neighbor_idx] + heuristic_cost_estimate(neighbor, goal))
 				came_from[neighbor_idx] = current
-			elseif (neighbor_state or 0) == 0 and closed_set[neighbor_idx] == nil and open_set[neighbor_idx] == nil then
+			elseif neighbor_state == nil and closed_set[neighbor_idx] == nil and open_set[neighbor_idx] == nil then
 				open_set[neighbor_idx] = neighbor
 				g_scores[neighbor_idx] = tentative_g_score
 				f_scores.insert(neighbor_idx, g_scores[neighbor_idx] + heuristic_cost_estimate(neighbor, goal))
