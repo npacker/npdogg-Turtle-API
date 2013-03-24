@@ -1,45 +1,21 @@
-Position = {}
+Vector = {}
 
-local SOUTH, WEST, NORTH, EAST, UP, DOWN = 0, 1, 2, 3, 4, 5
-
-local deltas =
-{
-	[SOUTH] = { x =	 0, y =	 0, z =	 1 },
-	[WEST]	= { x = -1, y =	 0, z =	 0 },
-	[NORTH] = { x =	 0, y =	 0, z = -1 },
-	[EAST]	= { x =	 1, y =	 0, z =	 0 },
-	[UP]		= { x =	 0, y =	 1, z =	 0 },
-	[DOWN]	= { x =	 0, y = -1, z =	 0 }
-}
-
-function Position.SOUTH()
-	return SOUTH
-end
-
-function Position.WEST()
-	return WEST
-end
-
-function Position.NORTH()
-	return NORTH
-end
-
-function Position.EAST()
-	return EAST
-end
-
-function Position.UP()
-	return UP
-end
-
-function Position.DOWN()
-	return DOWN
-end
-
-function Position.new(x, y, z, f)
+function Vector.new(x, y, z, f)
 
 	local this = {}
+	
+	local SOUTH, WEST, NORTH, EAST, UP, DOWN = 0, 1, 2, 3, 4, 5
 
+	local deltas =
+	{
+		[SOUTH] = { x =	 0, y =	 0, z =	 1 },
+		[WEST]	= { x = -1, y =	 0, z =	 0 },
+		[NORTH] = { x =	 0, y =	 0, z = -1 },
+		[EAST]	= { x =	 1, y =	 0, z =	 0 },
+		[UP]		= { x =	 0, y =	 1, z =	 0 },
+		[DOWN]	= { x =	 0, y = -1, z =	 0 }
+	}
+	
 	x = x or 0
 	y = y or 0
 	z = z or 0
@@ -91,12 +67,12 @@ function Position.new(x, y, z, f)
 		return this
 	end
 
-	function this.distance(position)
-		return math.abs(position.getX() - x) + math.abs(position.getY() - y) + math.abs(position.getZ() - z)
+	function this.distance(vector)
+		return math.abs(vector.getX() - x) + math.abs(vector.getY() - y) + math.abs(vector.getZ() - z)
 	end
 	
-	function this.equals(position)
-		if x ~= position.getX() or y ~= position.getY() or z ~= position.getZ() then
+	function this.equals(vector)
+		if x ~= vector.getX() or y ~= vector.getY() or z ~= vector.getZ() then
 			return false
 		end
 
@@ -104,7 +80,7 @@ function Position.new(x, y, z, f)
 	end
 
 	function this.copy()
-		return Position.new(x, y, z, f)
+		return Vector.new(x, y, z, f)
 	end
 
 	function this.toString()
