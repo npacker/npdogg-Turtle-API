@@ -22,7 +22,9 @@ function BinaryHeap.new()
 	end
 	
 	local function swap(a, b)
-		local swap = heap[a]
+		local swap
+		
+		swap = heap[a]
 		heap[a] = heap[b]
 		heap[b] = swap
 	end
