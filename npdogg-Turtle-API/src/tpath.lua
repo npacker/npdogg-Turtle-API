@@ -47,7 +47,7 @@ end
 -- @return The output of reconstruct_path on success or an empty set on failure
 
 function a_star(start, goal, world)
-	local path = {}
+	local path = {}	
 	local open_set = {}
 	local closed_set = {}
 	local g_scores = {}
@@ -66,7 +66,7 @@ function a_star(start, goal, world)
 		open_set[current_idx] = nil
 		closed_set[current_idx] = current
 		
-		if current.equals(goal) then
+		if world.get(goal) == 1 or current.equals(goal) then
 			path = reconstruct_path(came_from, current)
 			break
 		end
