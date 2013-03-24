@@ -7,11 +7,7 @@ function Map.new()
   local map = {}
   local size = 0
 
-  function this.size()
-    return size
-  end
-
-  function this.exists(location)
+  local function exists(location)
     return map[location.toString()] ~= nil
   end
 
@@ -25,13 +21,8 @@ function Map.new()
   end
 
   function this.free(location)
-  	size = this.exists(location) and size or (size - 1)
+  	size = exists(location) and size or (size - 1)
     map[location.toString()] = nil
-  end
-
-  function this.clear()
-    map = {}
-    size = 0
   end
 
   return this
