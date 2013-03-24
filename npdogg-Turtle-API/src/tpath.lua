@@ -60,7 +60,7 @@ function a_star(start, goal, world)
 	f_scores.insert(start_idx, heuristic_cost_estimate(start, goal)) 
 
 	while next(open_set) do
-		local current_idx = f_scores.min()
+		local current_idx = f_scores.pop()
 		local current = open_set[current_idx]
 		
 		open_set[current_idx] = nil

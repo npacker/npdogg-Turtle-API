@@ -22,9 +22,7 @@ function BinaryHeap.new()
 	end
 	
 	local function swap(a, b)
-		local swap
-		
-		swap = heap[a]
+		local swap = heap[a]
 		heap[a] = heap[b]
 		heap[b] = swap
 	end
@@ -88,8 +86,9 @@ function BinaryHeap.new()
 		positions[old_key] = nil
 	end
 	
-	function this.min()
+	function this.pop()
 		local min = heap[1]
+		
 		deleteMin()
 		
 		return min
