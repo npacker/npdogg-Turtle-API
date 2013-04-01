@@ -1,18 +1,19 @@
 require "theap"
-require "tvector"
+require "tnode"
 require "tmap"
 require "tpath"
 
 local world = Map.new()
-world.fill(Vector.new(1, 0, 0))
-local start = Vector.new(0, 0, 0)
-local goal = Vector.new(64, 64, 64)
-local start_time = os.clock()
-local path = a_star(start, goal, world)
-local end_time = os.clock()
-	
-for _, waypoint in ipairs(path) do
-	print(waypoint.toString())
+local start = Node.new(0, 0, 0)
+local goal = Node.new(1024, 1024, 1024)
+local start_time
+local end_time
+local time = 0
+for i = 0, 20 do
+	start_time = os.clock()
+	a_star(start, goal, world)
+	end_time = os.clock()
+	time = time + (end_time - start_time)
 end
-
-print("\n" .. end_time - start_time)
+time = time / 20
+print("\n" .. time)
