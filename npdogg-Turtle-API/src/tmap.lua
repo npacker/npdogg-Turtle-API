@@ -16,7 +16,7 @@ function Map.new()
   end
 
   function this.fill(location)
-  	size = this.exists(location) and size or (size + 1)
+  	size = exists(location) and size or (size + 1)
     map[location.toString()] = 1
   end
 

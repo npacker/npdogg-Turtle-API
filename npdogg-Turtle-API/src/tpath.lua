@@ -25,9 +25,9 @@ end
 function reconstruct_path(came_from, current)
 	local path = {}
 	local current_idx = current.toString()
+	local next = came_from[current_idx]
 
-	if came_from[current_idx] ~= nil then
-		local next = came_from[current_idx]
+	if next ~= nil then
 		path = reconstruct_path(came_from, next)
 		table.insert(path, current)
 	end
@@ -57,7 +57,7 @@ function a_star(start, goal, world)
 	
 	open_set[start_idx] = start
 	g_scores[start_idx] = 0
-	f_scores.insert(start_idx, heuristic_cost_estimate(start, goal)) 
+	f_scores.insert(start_idx, heuristic_cost_estimate(start, goal))
 
 	while next(open_set) do
 		local current_idx = f_scores.pop()

@@ -9,18 +9,6 @@ function BinaryHeap.new()
 	local positions = {}
 	local base = 0
 	
-	local function getLeftChildIndex(index)
-		return index * 2
-	end
-	
-	local function getRightChildIndex(index)
-		return index * 2 + 1
-	end
-	
-	local function getParentIndex(index)
-		return math.floor(index / 2)
-	end
-	
 	local function swap(a, b)
 		local swap = heap[a]
 		heap[a] = heap[b]
@@ -31,7 +19,7 @@ function BinaryHeap.new()
 		local value = values[heap[index]]
 		
 		while index > 1 do
-			local parent_index = getParentIndex(index)
+			local parent_index = math.floor(index / 2)
 			local parent_value = values[heap[parent_index]]
 			
 			if value <= parent_value then
@@ -47,8 +35,8 @@ function BinaryHeap.new()
 	
 	local function sift(index)
 		local value = values[heap[index]]
-		local left_child_index = getLeftChildIndex(index)
-		local right_child_index = getRightChildIndex(index)
+		local left_child_index = index * 2
+		local right_child_index = index * 2 + 1
 		local left_child_value = values[heap[left_child_index]]
 		local right_child_value = values[heap[right_child_index]]
 		local min_child_index = index
@@ -96,8 +84,8 @@ function BinaryHeap.new()
 	
 	function this.insert(key, value)
 		base = base + 1
-		values[key] = value
 		heap[base] = key
+		values[key] = value
 		positions[key] = bubble(base)
 	end
 	

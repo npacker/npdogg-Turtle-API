@@ -1,6 +1,6 @@
-Vector = {}
+Node = {}
 
-function Vector.new(x, y, z, f)
+function Node.new(x, y, z, f)
 
 	local this = {}
 	
@@ -67,12 +67,12 @@ function Vector.new(x, y, z, f)
 		return this
 	end
 
-	function this.distance(vector)
-		return math.abs(vector.getX() - x) + math.abs(vector.getY() - y) + math.abs(vector.getZ() - z)
+	function this.distance(node)
+		return math.abs(node.getX() - x) + math.abs(node.getY() - y) + math.abs(node.getZ() - z)
 	end
 	
-	function this.equals(vector)
-		if x ~= vector.getX() or y ~= vector.getY() or z ~= vector.getZ() then
+	function this.equals(node)
+		if x ~= node.getX() or y ~= node.getY() or z ~= node.getZ() then
 			return false
 		end
 
@@ -80,7 +80,7 @@ function Vector.new(x, y, z, f)
 	end
 
 	function this.copy()
-		return Vector.new(x, y, z, f)
+		return Node.new(x, y, z, f)
 	end
 
 	function this.toString()
