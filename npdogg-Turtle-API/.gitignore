@@ -4,3 +4,7 @@
 .buildpath
 .project
 .DS_Store
+/test/magic_turtle.lua
+/test/test.lua
+/test/.DS_Store
+/src/.DS_Store
