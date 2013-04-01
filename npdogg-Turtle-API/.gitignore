@@ -1,0 +1,10 @@
+/.buildpath
+/.project
+/.DS_Store
+.buildpath
+.project
+.DS_Store
+/test/test.lua
+/test/magic_turtle.lua
+/test/.DS_Store
+/src/.DS_Store
