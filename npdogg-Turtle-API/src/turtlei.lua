@@ -4,7 +4,7 @@ function TurtleBase.new()
 
 	local this = {}
 
-	this.position = tnode.node.new()
+	this.position = tnode.Node.new()
 	this.world = tmap.Map.new()
 	this.items = 0
 
