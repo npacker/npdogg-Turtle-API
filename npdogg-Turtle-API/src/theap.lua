@@ -17,9 +17,10 @@ function BinaryHeap.new()
 	
 	local function bubble(index)
 		local value = values[heap[index]]
+		local floor = math.floor
 		
 		while index > 1 do
-			local parent_index = math.floor(index / 2)
+			local parent_index = floor(index / 2)
 			local parent_value = values[heap[parent_index]]
 			
 			if value <= parent_value then

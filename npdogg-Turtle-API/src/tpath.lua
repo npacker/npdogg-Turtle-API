@@ -56,7 +56,6 @@ function a_star(start, goal, world)
 	local f_scores = BinaryHeap.new()
 	local came_from = {}
 	local start_idx = start.toString()
-	local get = world.get
 	
 	open_set[start_idx] = start
 	g_scores[start_idx] = 0
@@ -77,7 +76,7 @@ function a_star(start, goal, world)
 		for f = 0, 5 do
 			local neighbor = current.copy().step(f)
 			local neighbor_idx = neighbor.toString()
-			local neighbor_state = get(neighbor)
+			local neighbor_state = world.get(neighbor)
 			local tentative_g_score = g_scores[current_idx] + 1
 
 			if open_set[neighbor_idx] ~= nil and tentative_g_score < g_scores[neighbor_idx] then
