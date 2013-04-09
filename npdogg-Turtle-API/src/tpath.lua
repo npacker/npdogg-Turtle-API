@@ -2,12 +2,14 @@
 -- A* heuristic estimate of the cost to travel between two nodes.
 -- Calculates the Manhattan distance between the start and goal.
 --
--- @param start The node from which the distance will be calculated
--- @param goal The destination of simulated travel from start
+-- @param start The node from which the distance will be calculated. Expects a
+-- Node object.
+-- @param goal The destination of simulated travel from start. Expects a Node
+-- object.
 --
--- @return Integer value of the Manhattan distance between start and goal
+-- @return Integer value of the Manhattan distance between start and goal.
 
-function heuristic_cost_estimate(start, goal)
+local function heuristic_cost_estimate(start, goal)
 	return start.distance(goal)
 end
 
@@ -16,13 +18,13 @@ end
 -- Given a hash map of nodes where the keys are the children of the node stored
 -- at each index, the nodes in the final path will be returned in an array.
 --
--- @param came_from The list of nodes. Expects a list of Position objects.
+-- @param came_from The list of nodes. Expects a list of Node objects.
 -- @param current_node The current node in the path iteration. Expects a
--- Position object.
+-- Node object.
 --
--- @return A list of the nodes in the reconstructed path
+-- @return A list of the nodes in the reconstructed path.
 
-function reconstruct_path(came_from, current)
+local function reconstruct_path(came_from, current)
 	local path = {}
 	local current_idx = current.toString()
 	local next = came_from[current_idx]
@@ -40,11 +42,11 @@ end
 -- Given a starting point and a goal, it will determine the shortest path
 -- between the two points.
 --
--- @param start The starting node. Expects a Position object.
--- @param goal The goal node. Expects a Position object.
+-- @param start The starting node. Expects a Node object.
+-- @param goal The goal node. Expects a Node object.
 -- @param world The map object containing the known geography of the world
 --
--- @return The output of reconstruct_path on success or an empty set on failure
+-- @return The output of reconstruct_path on success or an empty set on failure.
 
 function a_star(start, goal, world)
 	local path = {}	
