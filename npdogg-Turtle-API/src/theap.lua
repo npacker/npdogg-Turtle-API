@@ -37,8 +37,8 @@ function BinaryHeap.new()
 	local function sift(index)
 		local value = values[heap[index]]
 		local left_child_index = index * 2
-		local right_child_index = index * 2 + 1
 		local left_child_value = values[heap[left_child_index]]
+		local right_child_index = index * 2 + 1
 		local right_child_value = values[heap[right_child_index]]
 		local min_child_index = index
 		local min_child_value
@@ -62,17 +62,22 @@ function BinaryHeap.new()
 	end
 	
 	local function deleteMin()
-		local old_key, new_key, old_base
-		
-		old_key = heap[1]
-		heap[1] = heap[base]
-		new_key = heap[1]
-		old_base = base
-		base = base - 1
-		positions[new_key] = sift(1)
-		heap[old_base] = nil
-		values[old_key] = nil
-		positions[old_key] = nil
+		if base > 0 then
+			local old_key, new_key
+			
+			old_key = heap[1]
+			swap(1, base)
+			values[old_key] = nil
+			positions[old_key] = nil
+			old_key = nil
+			heap[base] = nil
+			base = base - 1
+			new_key = heap[1]
+			
+			if base > 1 then
+				positions[new_key] = sift(1)
+			end
+		end
 	end
 	
 	function this.pop()

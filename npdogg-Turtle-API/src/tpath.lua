@@ -28,10 +28,11 @@ local function reconstruct_path(came_from, current)
 	local path = {}
 	local current_idx = current.toString()
 	local next = came_from[current_idx]
+	local insert = table.insert
 
 	if next ~= nil then
 		path = reconstruct_path(came_from, next)
-		table.insert(path, current)
+		insert(path, current)
 	end
 
 	return path
