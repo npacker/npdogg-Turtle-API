@@ -1,5 +1,19 @@
+---
+-- Binary heap.
+-- 
+-- @module BinaryHeap
 BinaryHeap = {}
 
+---
+-- Binary heap.
+-- 
+-- @type BinaryHeap
+
+---
+-- Constructor.
+-- 
+-- @function [parent=#BinaryHeap] new
+-- @return #BinaryHeap
 function BinaryHeap.new()
 
 	local this = {}
@@ -10,9 +24,11 @@ function BinaryHeap.new()
 	local base = 0
 	
 	local function swap(a, b)
-		local swap = heap[a]
+		local temp = heap[a]
 		heap[a] = heap[b]
-		heap[b] = swap
+		heap[b] = temp
+		positions[heap[a]] = a
+		positions[heap[b]] = b
 	end
 	
 	local function bubble(index)
@@ -61,8 +77,10 @@ function BinaryHeap.new()
 		return index
 	end
 	
-	local function deleteMin()
-		if base > 0 then
+	function this.pop()
+		local min = heap[1]
+		
+		if base > 1 then
 			local old_key, new_key
 			
 			old_key = heap[1]
@@ -73,17 +91,13 @@ function BinaryHeap.new()
 			heap[base] = nil
 			base = base - 1
 			new_key = heap[1]
-			
-			if base > 1 then
-				positions[new_key] = sift(1)
-			end
+			positions[new_key] = sift(1)
+		elseif base == 1 then
+			values[heap[1]] = nil
+			positions[heap[1]] = nil
+			heap[1] = nil
+			base = 0
 		end
-	end
-	
-	function this.pop()
-		local min = heap[1]
-		
-		deleteMin()
 		
 		return min
 	end

@@ -1,5 +1,19 @@
+---
+-- Node.
+-- 
+-- @module Node
 Node = {}
 
+---
+-- Node.
+-- 
+-- @type Node
+
+---
+-- Constructor.
+-- 
+-- @function [parent=#Node] new
+-- @return #Node
 function Node.new(x, y, z, f)
 
 	local this = {}

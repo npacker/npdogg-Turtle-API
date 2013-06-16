@@ -1,28 +1,6 @@
---- 
--- A* heuristic estimate of the cost to travel between two nodes.
--- Calculates the Manhattan distance between the start and goal.
---
--- @param start The node from which the distance will be calculated. Expects a
--- Node object.
--- @param goal The destination of simulated travel from start. Expects a Node
--- object.
---
--- @return Integer value of the Manhattan distance between start and goal.
-
 local function heuristic_cost_estimate(start, goal)
 	return start.distance(goal)
 end
-
----
--- A* path reconstruction.
--- Given a hash map of nodes where the keys are the children of the node stored
--- at each index, the nodes in the final path will be returned in an array.
---
--- @param came_from The list of nodes. Expects a list of Node objects.
--- @param current_node The current node in the path iteration. Expects a
--- Node object.
---
--- @return A list of the nodes in the reconstructed path.
 
 local function reconstruct_path(came_from, current)
 	local path = {}
@@ -39,16 +17,15 @@ local function reconstruct_path(came_from, current)
 end
 
 ---
--- Implements the A* path-finding algorithm.
--- Given a starting point and a goal, it will determine the shortest path
--- between the two points.
---
--- @param start The starting node. Expects a Node object.
--- @param goal The goal node. Expects a Node object.
--- @param world The map object containing the known geography of the world
---
--- @return The output of reconstruct_path on success or an empty set on failure.
-
+-- A* algorithm.
+-- Finds the shortest path between two points, given a start node, end node and
+-- a list of known obstacles in the world.
+-- 
+-- @function [parent=#global] a_star
+-- @param start 
+-- @param goal
+-- @param world
+-- @return #table Complete list of nodes in the path on success, empty set on failure.
 function a_star(start, goal, world)
 	local path = {}	
 	local open_set = {}
