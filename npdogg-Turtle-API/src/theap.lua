@@ -10,7 +10,7 @@ BinaryHeap = {}
 -- @type BinaryHeap
 
 ---
--- Constructor.
+-- Binary heap constructor.
 -- 
 -- @function [parent=#BinaryHeap] new
 -- @return #BinaryHeap
@@ -77,6 +77,11 @@ function BinaryHeap.new()
 		return index
 	end
 	
+	---
+	-- Returns the root of the heap and deletes the value.
+	-- 
+	-- @function [parent=#BinaryHeap] pop
+	-- @return #string
 	function this.pop()
 		local min = heap[1]
 		
@@ -102,6 +107,13 @@ function BinaryHeap.new()
 		return min
 	end
 	
+	---
+	-- Inserts a new value onto the heap.
+	-- 
+	-- @function [parent=#BinaryHeap] insert
+	-- @param #string key
+	-- @param #number value
+	-- @return #nil
 	function this.insert(key, value)
 		base = base + 1
 		heap[base] = key
@@ -109,6 +121,13 @@ function BinaryHeap.new()
 		positions[key] = bubble(base)
 	end
 	
+	---
+	-- Updates the value of an item on the heap.
+	-- 
+	-- @function [parent=#BinaryHeap] update
+	-- @param #string key
+	-- @param #number value
+	-- @return @nil
 	function this.update(key, value)
 		local index = positions[key]
 		values[key] = value

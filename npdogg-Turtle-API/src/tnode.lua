@@ -10,9 +10,13 @@ Node = {}
 -- @type Node
 
 ---
--- Constructor.
+-- Node constructor.
 -- 
 -- @function [parent=#Node] new
+-- @param #number x
+-- @param #number y
+-- @param #number z
+-- @param #number f
 -- @return #Node
 function Node.new(x, y, z, f)
 
