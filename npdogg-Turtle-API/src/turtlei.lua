@@ -14,9 +14,7 @@ function TurtleBase.new()
 	-- closes the handle.
 	--
 	-- @param message The message to be appended to the log file.
-	--
 	-- @return void
-
 	function this.log(message)
 		local file_name = string.format("%s_log", os.getComputerLabel())
 		local log_file = fs.open(file_name, "a")
@@ -31,7 +29,6 @@ function TurtleBase.new()
 	-- map. Also records the currently occupied position as free in the world map.
 	--
 	-- @return void
-	
 	function this.discover()
 		local f, u, d = this.position.copy().forward(), this.position.copy().up(), this.position.copy().down()
 
@@ -61,7 +58,6 @@ function TurtleBase.new()
 	-- The position of the turtle is updated and discover is called.
 	--
 	-- @return boolean "success"
-	
 	function this.turnLeft()
 		if turtle.turnLeft() then
 			this.position.turnLeft()
@@ -79,7 +75,6 @@ function TurtleBase.new()
 	-- The position of the turtle is updated and discover is called.
 	--
 	-- @return boolean "success"
-	
 	function this.turnRight()
 		if turtle.turnRight() then
 			this.position.turnRight()
@@ -97,7 +92,6 @@ function TurtleBase.new()
 	-- The position of the turtle is updated and discover is called.
 	--
 	-- @return boolean "success"
-	
 	function this.turnAround()
 		return this.turnRight() and this.turnRight()
 	end
@@ -107,7 +101,6 @@ function TurtleBase.new()
 	-- The position of the turtle is updated and discover is called.
 	--
 	-- @return boolean "success"
-	
 	function this.turnTo(direction)
 		if this.position.getF() == direction then
 			return true
@@ -125,10 +118,8 @@ function TurtleBase.new()
 	-- the given distance.
 	-- 
 	-- @param distance The distance to be traveled.
-	-- 
 	-- @return boolean True if the fuel level is greater than or equal to the
-	-- distance, false otherwise.
-
+	-- distance, false otherwise
 	function this.sufficientFuel(distance)
 		return turtle.getFuelLevel() - distance >= 0
 	end
@@ -139,7 +130,6 @@ function TurtleBase.new()
 	-- movement is unsuccessful, the obstruction is recorded on the world map.
 	--
 	-- @return boolean "success"
-	
 	function this.forward()
 		if this.sufficientFuel(1) then
 			if turtle.forward() then
@@ -164,7 +154,6 @@ function TurtleBase.new()
 	-- movement is unsuccessful, the obstruction is recorded on the world map.
 	--
 	-- @return boolean "success"
-
 	function this.back()
 		if this.sufficientFuel(1) then
 			if turtle.back() then
@@ -189,7 +178,6 @@ function TurtleBase.new()
 	-- movement is unsuccessful, the obstruction is recorded on the world map.
 	--
 	-- @return boolean "success"
-
 	function this.up()
 		if this.sufficientFuel(1) then
 			if turtle.up() then
@@ -214,7 +202,6 @@ function TurtleBase.new()
 	-- movement is unsuccessful, the obstruction is recorded on the world map.
 	--
 	-- @return boolean "success"
-
 	function this.down()
 		if this.sufficientFuel(1) then
 			if turtle.down() then
@@ -238,10 +225,8 @@ function TurtleBase.new()
 	-- Sends the turtle on a direct path and assumes that here are no obstacles.
 	-- Execution is halted if an obstacle is encountered.
 	-- 
-	-- @param goal The position to which the turtle will move.
-	-- 
+	-- @param goal The position to which the turtle will move. 
 	-- @return boolean "success"
-	
 	function this.goTo(goal)
 		local dx, dy, dz = goal.getX() - this.position.getX(), goal.getY() - this.position.getY(), goal.getZ() - this.position.getZ()
 		
@@ -296,9 +281,7 @@ function TurtleBase.new()
 	-- not attempt to dig through obstacles.
 	--
 	-- @param goal The position to which the turtle will move.
-	--
 	-- @return boolean "success"
-
 	function this.pathfind(goal)
 		while this.position.getX() ~= goal.getX() or this.position.getY() ~= goal.getY() or this.position.getZ() ~= goal.getZ() do
 			local path = tpath.a_star(this.position, goal, this.world)
@@ -335,9 +318,7 @@ function Turtle.extend(this)
 	--
 	-- @param start_slot The slot at which to begin counting inventory
 	-- @param end_slot The slot at which to stop counting inventory
-	--
 	-- @return number The total items in inventory
-
 	function this.count(start_slot, end_slot)
 		start_slot = start_slot or 1
 		end_slot = end_slot or 16
@@ -358,7 +339,6 @@ function Turtle.extend(this)
 	--
 	-- @return boolean True if count is greater than the recorded value, false
 	-- otherwise.
-
 	function this.sucked()
 		local count = this.count()
 
@@ -376,9 +356,7 @@ function Turtle.extend(this)
 	--
 	-- @param start_slot The first slot from which to drop items.
 	-- @param end_slot The last slot from which to drop items.
-	--
 	-- @return boolean "success"
-
 	function this.drop(start_slot, end_slot)
 		start_slot = start_slot or 1
 		end_slot = end_slot or 16
@@ -400,9 +378,7 @@ function Turtle.extend(this)
 	--
 	-- @param quantity The amount of fuel items to consume. The turtle will
 	-- consume a full stack by default.
-	--
 	-- @return boolean "success"
-
 	function this.refuel(amount)
 		amount = amount or 64
 		local start_fuel_level = turtle.getFuelLevel()
@@ -442,9 +418,7 @@ function MiningTurtle.extend(this)
 	--
 	-- @param max_tries The number of attempts the Turtle should make to dig a
 	-- block.
-	--
 	-- @return boolean "success"
-
 	function this.dig(max_tries)
 		max_tries = max_tries or 1
 
@@ -467,9 +441,7 @@ function MiningTurtle.extend(this)
 	--
 	-- @param max_tries The number of attempts the Turtle should make to dig a
 	-- block.
-	--
 	-- @return boolean "success"
-
 	function this.digUp(max_tries)
 		max_tries = max_tries or 1
 
@@ -492,9 +464,7 @@ function MiningTurtle.extend(this)
 	--
 	-- @param max_tries The number of attempts the Turtle should make to dig a
 	-- block.
-	--
 	-- @return boolean "success"
-
 	function this.digDown(max_tries)
 		max_tries = max_tries or 1
 
@@ -515,9 +485,7 @@ function MiningTurtle.extend(this)
 	-- attempt to clear the space by digging.
 	--
 	-- @param slot The slot containing the item to be placed.
-	--
 	-- @return boolean "success"
-
 	function this.place(slot)
 		turtle.select(slot)
 
@@ -534,9 +502,7 @@ function MiningTurtle.extend(this)
 	-- not empty.
 	--
 	-- @param target_slot The slot into which the retrieved item will be placed.
-	--
 	-- @return boolean "success"
-
 	function this.retrieve(target_slot)
 		target_slot = target_slot or 1
 		turtle.select(target_slot)
@@ -562,9 +528,7 @@ function MiningTurtle.extend(this)
 	-- deposited
 	-- @param end_slot The last inventory slot from which items should be
 	-- deposited
-	--
 	-- @return boolean "success"
-
 	function this.deposit(container_slot, start_slot, end_slot)
 		container_slot = container_slot or 1
 		start_slot = start_slot or 2
