@@ -24,11 +24,8 @@ function BinaryHeap.new()
 	local base = 0
 	
 	local function swap(a, b)
-		local temp = heap[a]
-		heap[a] = heap[b]
-		heap[b] = temp
-		positions[heap[a]] = a
-		positions[heap[b]] = b
+		heap[a], heap[b] = heap[b], heap[a]
+		positions[heap[a]], positions[heap[b]] = a, b
 	end
 	
 	local function bubble(index)
