@@ -1,16 +1,35 @@
+---
+-- A* module.
+-- 
+-- @module astar
+
+---
+-- Calls the distance method on a node, returning the distance between that
+-- node and the node provided in the parameter.
+--
+-- @function [parent=#astar] heuristic_cost_estimate
+-- @param start
+-- @param goal
+-- @return #number The Manhattan distance between two points.
 local function heuristic_cost_estimate(start, goal)
 	return start.distance(goal)
 end
 
+---
+-- Constructs a complete path from the results of the A* function.
+-- 
+-- @function [parent=#astar] reconstruct_path
+-- @param came_from
+-- @param current
+-- @return #table 
 local function reconstruct_path(came_from, current)
 	local path = {}
 	local current_idx = current.toString()
 	local next = came_from[current_idx]
-	local insert = table.insert
 
 	if next ~= nil then
 		path = reconstruct_path(came_from, next)
-		insert(path, current)
+		table.insert(path, current)
 	end
 
 	return path
@@ -21,10 +40,12 @@ end
 -- Finds the shortest path between two points, given a start node, end node and
 -- a list of known obstacles in the world.
 -- 
--- @function [parent=#global] a_star
+-- @function [parent=#astar] a_star
+-- 
 -- @param start 
 -- @param goal
 -- @param world
+-- 
 -- @return #table Complete list of nodes in the path on success, empty set on failure.
 function a_star(start, goal, world)
 	local path = {}	
