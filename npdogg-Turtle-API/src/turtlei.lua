@@ -1,3 +1,7 @@
+os.loadAPI("tnode")
+os.loadAPI("theap")
+os.loadAPI("tpath")
+
 TurtleBase = {}
 
 function TurtleBase.new()

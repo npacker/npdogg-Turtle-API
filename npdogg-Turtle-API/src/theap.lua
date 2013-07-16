@@ -23,11 +23,26 @@ function BinaryHeap.new()
 	local positions = {}
 	local base = 0
 	
+	---
+	-- Swaps the position of two values in the heap.
+	-- 
+	-- @function [parent=#BinaryHeap] swap
+	-- @param #string a The key of the first value to be swapped
+	-- @param #string b The key of the second vaue to be swapped
+	-- @return #nil
 	local function swap(a, b)
 		heap[a], heap[b] = heap[b], heap[a]
 		positions[heap[a]], positions[heap[b]] = a, b
 	end
 	
+	---
+	-- Preserves the heap state by moving a value up through the heap as long as
+	-- it's value is less than or equal to the value of it's parent.
+	-- 
+	-- @function [parent=#BinaryHeap] bubble
+	-- @param #number index The initial position of the value in the heap
+	-- @return #number index The index of the value after the bubble operation is
+	-- complete
 	local function bubble(index)
 		local value = values[heap[index]]
 		local floor = math.floor
@@ -47,6 +62,14 @@ function BinaryHeap.new()
 		return index
 	end
 	
+	--- 
+	-- Moves a value down through the heap as long as it is greater than the
+	-- values of either of it's children. Used to assist with the deletion of
+	-- the root of the heap.
+	-- 
+	-- @function [parent=#BinaryHeap] sift
+	-- @param #number index
+	-- @return #number index
 	local function sift(index)
 		local value = values[heap[index]]
 		local left_child_index = index * 2
