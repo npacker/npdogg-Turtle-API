@@ -37,7 +37,7 @@ function BinaryHeap.new()
 	
 	---
 	-- Preserves the heap state by moving a value up through the heap as long as
-	-- it's value is less than or equal to the value of it's parent.
+	-- its value is less than or equal to the value of its parent.
 	-- 
 	-- @function [parent=#BinaryHeap] bubble
 	-- @param #number index The initial position of the value in the heap
@@ -64,7 +64,7 @@ function BinaryHeap.new()
 	
 	--- 
 	-- Moves a value down through the heap as long as it is greater than the
-	-- values of either of it's children. Used to assist with the deletion of
+	-- values of either of its children. Used to assist with the deletion of
 	-- the root of the heap.
 	-- 
 	-- @function [parent=#BinaryHeap] sift
